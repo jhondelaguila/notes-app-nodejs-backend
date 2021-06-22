@@ -7,14 +7,16 @@ const { PORT } = process.env;
 const app = express();
 
 const existeTema = require('./middlewares/existeTema');
-const {listaTemas, infoTema, nuevoTema, valorarTema, editarTema} = require('./controladores/temas');
+const existeUsuario = require('./middlewares/existeUsuario'); 
 
+const {listaTemas, infoTema, nuevoTema, valorarTema, editarTema} = require('./controladores/temas');
+const {obtenerUsuario} = require('./controladores/usuarios');
 app.use(morgan('dev'));
 app.use(express.json());
 
 /**
  * ########################
- * ## Endpoints Usuarios ##
+ * ## Endpoints Temas ##
  * ########################
  */
 
@@ -23,6 +25,12 @@ app.get('/temas/:idTema',existeTema, infoTema);
 app.post('/temas',nuevoTema);
 app.post('/temas/:idTema/valoracion', existeTema, valorarTema);
 app.put('/temas/:idTema',existeTema, editarTema);
+/**
+ * ########################
+ * ## Endpoints Usuarios ##
+ * ########################
+ */
+app.get('/Usuarios/:idUsuario', existeUsuario,obtenerUsuario);
 
 /**
  * #######################
