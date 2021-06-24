@@ -1,6 +1,6 @@
 const getDB = require('../../bbdd/db');
 
-const listaTemas = async (req, res, next) =>{
+const listaNotas = async (req, res, next) => {
     let connection;
 
     try {
@@ -8,32 +8,32 @@ const listaTemas = async (req, res, next) =>{
 
         const {search, order, direction } = req.query;
 
-        const validOrderFields = ['titulo','fecha','valoracion'];
+        const validOrderFields = ['contenido','fecha','valoracion'];
         const validOrderDirection = ['DESC','ASC'];
 
         const orderBy = validOrderFields.includes(order) ? order : 'valoracion';
         const orderDirection = validOrderDirection.includes(direction) ? direction: 'ASC';
-        
+
         let resultados;
 
         if (search) {
             [resultados] = await connection.query(
                 `
-                SELECT  t.id, t.privada, t.categoria, t.titulo, t.fecha_creacion, t.fecha_modificacion t.id_usuario, avg(ifnull(v.valoracion,0)) as valoracion
-                FROM temas t
-                left join valoraciones v on(t.id = v.id_tema)
-                where t.titulo like ?
-                group by t.id, t.privada, t.categoria, t.titulo, t.fecha_creacion,t.fecha_modificacion, t.id_usuario
+                SELECT  n.id, n.contenido,n.fecha_creacion,n.fecha_modificacion,n.id_tema, n.id_usuario, avg(ifnull(v.valoracion,0)) as valoracion
+                FROM notas n
+                left join valoraciones v on(n.id = v.id_nota)
+                where n.contenido = ?
+                group by n.id, n.contenido,n.fecha_creacion,n.fecha_modificacion,n.id_tema, n.id_usuario
                 order by ${orderBy} ${orderDirection};
                 `,
                 [`%${search}%`]
             );
         } else {
             [resultados] = await connection.query(`
-                SELECT  t.id, t.privada, t.categoria, t.titulo, t.fecha_creacion,t.fecha_modificacion, t.id_usuario, avg(ifnull(v.valoracion,0)) as valoracion
-                FROM temas t
-                left join valoraciones v on(t.id = v.id_tema)
-                group by t.id, t.privada, t.categoria, t.titulo, t.fecha_creacion,t.fecha_modificacion, t.id_usuario
+                SELECT  n.id, n.contenido,n.fecha_creacion,n.fecha_modificacion,n.id_tema, n.id_usuario, avg(ifnull(v.valoracion,0)) as valoracion
+                FROM notas n
+                left join valoraciones v on(n.id = v.id_nota)
+                group by n.id, n.contenido,n.fecha_creacion,n.fecha_modificacion,n.id_tema, n.id_usuario
                 order by ${orderBy} ${orderDirection};
             `);
         }
@@ -42,6 +42,7 @@ const listaTemas = async (req, res, next) =>{
             status: 'ok',
             data: resultados,
         });
+
     } catch (error) {
         next(error);
     } finally {
@@ -49,5 +50,4 @@ const listaTemas = async (req, res, next) =>{
     }
 };
 
-module.exports = listaTemas;
-
+module.exports = listaNotas;

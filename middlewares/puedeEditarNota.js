@@ -1,17 +1,17 @@
 const getDB = require('../bbdd/db');
 
-const puedeEditar = async (req, res, next) => {
+const puedeEditarNota = async (req, res, next) => {
     let connection;
 
     try {
         connection = await getDB();
 
-        const { idTema } = req.params;
+        const { idNota } = req.params;
         const {idUsuario} = req.body;
 
         const [propietario] = await connection.query(
-            `SELECT id_usuario FROM temas WHERE id = ?;`,
-            [idTema]
+            `SELECT id_usuario FROM notas WHERE id = ?;`,
+            [idNota]
         );
 
         // Si no soy el propietario de la entrada y no soy administrador
@@ -32,5 +32,4 @@ const puedeEditar = async (req, res, next) => {
     }
 };
 
-module.exports = puedeEditar;
-
+module.exports = puedeEditarNota;
