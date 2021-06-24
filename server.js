@@ -8,8 +8,15 @@ const app = express();
 
 const existeTema = require('./middlewares/existeTema');
 const existeUsuario = require('./middlewares/existeUsuario'); 
+const puedeEditar = require('./middlewares/puedeEditar')
 
-const {listaTemas, infoTema, nuevoTema, valorarTema, editarTema} = require('./controladores/temas');
+const {
+    listaTemas, 
+    infoTema, 
+    nuevoTema, 
+    valorarTema, 
+    editarTema, 
+    borrarTema} = require('./controladores/temas');
 const {obtenerUsuario} = require('./controladores/usuarios');
 app.use(morgan('dev'));
 app.use(express.json());
@@ -24,7 +31,8 @@ app.get('/temas', listaTemas);
 app.get('/temas/:idTema',existeTema, infoTema);
 app.post('/temas',nuevoTema);
 app.post('/temas/:idTema/valoracion', existeTema, valorarTema);
-app.put('/temas/:idTema',existeTema, editarTema);
+app.put('/temas/:idTema',existeTema,puedeEditar, editarTema);
+app.delete('/temas/:idTema', existeTema,puedeEditar, borrarTema);
 /**
  * ########################
  * ## Endpoints Usuarios ##

@@ -14,7 +14,7 @@
 - **GET** - [/temas/:idTema] - Obtener la info de un tema concreto.✅
 - **POST** - [/temas/] - Insertar nueva tema.✅
 - **PUT** - [/temas/:idTema] - Editar nombre de un tema.✅
-- **DELETE** - [/temas:idTema] - Eliminar una tema.
+- **DELETE** - [/temas/:idTema] - Eliminar una tema.
 - **POST** - [/temas/:idTema/valoracion] - Valorar una tema.✅
 - **GET** - [/temas/:idTema/valoracion] - Obtener la media de los votos.
 
