@@ -1,6 +1,10 @@
 const getDB = require('../../bbdd/db');
 
-const { generaCadenaAleatoria, sendMail } = require('../../helpers');
+const {
+    generaCadenaAleatoria,
+    sendMail,
+    formatDate,
+} = require('../../helpers');
 
 const usuarioNuevo = async (req, res, next) => {
     let connection;
@@ -45,9 +49,9 @@ const usuarioNuevo = async (req, res, next) => {
         });
         // Guardamos al usuario en la base de datos junto al código de registro.
         await connection.query(
-            `INSERT INTO usuarios (email, contraseña, codigoRegistro,) VALUES (?, SHA2(?, 512), ?, ?);`
+            `INSERT INTO usuarios (email, contraseña, codigoRegistro, createdAt) VALUES (?, SHA2(?, 512), ?, ?);`,
+            [email, contraseña, CodigoRegistro, formatDate(new Date())]
         );
-
         res.send({
             status: 'ok',
             data: 'Usuario registrado, comprueba tu email para activarlo',

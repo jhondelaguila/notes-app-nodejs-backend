@@ -18,7 +18,12 @@ const {
     editarTema,
 } = require('./controladores/temas');
 
-const { obtenerUsuario, usuarioNuevo } = require('./controladores/usuarios');
+const {
+    obtenerUsuario,
+    usuarioNuevo,
+    validaUsuario,
+    loginUsuario,
+} = require('./controladores/usuarios');
 
 app.use(morgan('dev'));
 app.use(express.json());
@@ -42,6 +47,11 @@ app.put('/temas/:idTema', existeTema, editarTema);
 app.get('/Usuarios/:idUsuario', existeUsuario, obtenerUsuario);
 //Crea un usuario nuevo "da error"
 app.post('/Usuarios', usuarioNuevo);
+// Validar usuario
+app.get('/Usuarios/validacion/:CodigoRegistro', validaUsuario);
+//Login de usuario
+app.post('/Usuarios/login', loginUsuario);
+
 /**
  * #######################
  * ## Error & Not Found ##
