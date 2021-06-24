@@ -1,6 +1,6 @@
 # ENDPOINTS
 
-## Application
+## Notas
 
 -   **GET** - [/temas/notas] - Obtener lista notas.✅
 -   **GET** - [/temas/notas/:idNota] - Obtener la info de una nota concreta.✅
@@ -10,6 +10,8 @@
 -   **POST** - [/temas/notas/:idNota/valoracion] - Valorar una nota.✅
 -   **GET** - [/temas/notas/:idNota/mediavaloracion] - Obtener la media de las valoraciones.
 
+## Temas
+
 - **GET** - [/temas] - Obtener lista temas. ✅
 - **GET** - [/temas/:idTema] - Obtener la info de un tema concreto.✅
 - **POST** - [/temas/] - Insertar nueva tema.✅
@@ -18,7 +20,7 @@
 - **POST** - [/temas/:idTema/valoracion] - Valorar una tema.✅
 - **GET** - [/temas/:idTema/mediavaloracion] - Obtener la media de los votos.
 
-## Users
+## Usuarios
 
 -   **GET** - [/Usuarios/:idUsuario] - Obtener info de un usuario.✅
 -   **POST** - [/Usuarios] - Crea un usuario pendiente de activar.✅
