@@ -7,15 +7,27 @@ const { PORT } = process.env;
 const app = express();
 
 const existeTema = require('./middlewares/existeTema');
-//Importamos controladores de usuarios
-const existeUsuario = require('./middlewares/existeUsuario');
+const existeUsuario = require('./middlewares/existeUsuario'); 
+const puedeEditarTema = require('./middlewares/puedeEditarTema');
+const existeNota = require('./middlewares/existeNota');
+const puedeEditarNota = require('./middlewares/puedeEditarNota');
 
 const {
-    listaTemas,
-    infoTema,
-    nuevoTema,
-    valorarTema,
-    editarTema,
+    listaNotas, 
+    infoNota,
+    nuevaNota,
+    valorarNota,
+    editarNota,
+    borrarNota,
+} = require('./controladores/notas');
+
+const {
+    listaTemas, 
+    infoTema, 
+    nuevoTema, 
+    valorarTema, 
+    editarTema, 
+    borrarTema,
 } = require('./controladores/temas');
 
 const {
@@ -29,16 +41,32 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 /**
- * ########################
+ * #####################
+ * ## Endpoints Notas ##
+ * #####################
+ */
+
+ app.get('/temas/notas', listaNotas);
+ app.get('/temas/notas/:idNota',existeNota,infoNota );
+ app.post('/temas/notas', nuevaNota);
+ app.post('/temas/notas/:idNota/valoracion',existeNota, valorarNota);
+ app.put('/temas/notas/:idNota',existeNota, puedeEditarNota, editarNota);
+ app.delete('/temas/notas/:idNota',existeNota, puedeEditarNota, borrarNota );
+
+/**
+ * #####################
  * ## Endpoints Temas ##
- * ########################
+ * #####################
  */
 
 app.get('/temas', listaTemas);
 app.get('/temas/:idTema', existeTema, infoTema);
 app.post('/temas', nuevoTema);
 app.post('/temas/:idTema/valoracion', existeTema, valorarTema);
-app.put('/temas/:idTema', existeTema, editarTema);
+app.put('/temas/:idTema',existeTema, puedeEditarTema, editarTema);
+app.delete('/temas/:idTema', existeTema, puedeEditarTema, borrarTema);
+
+
 /**
  * ########################
  * ## Endpoints Usuarios ##
