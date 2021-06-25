@@ -5,18 +5,12 @@ function formatDate(date) {
     return format(date, 'yyyy-MM-dd HH:mm:ss');
 }
 
-module.exports = {
-    formatDate,
-    generaCadenaAleatoria,
-    sendMail,
-};
-
 // Generamos una cadena de caracteres aleatoria.
 
 function generaCadenaAleatoria(length) {
     return crypto.randomBytes(length).toString('hex');
 }
-//asignamos ApiKey Sendgrid
+//asignamos el ApiKey a Sendgrid
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 //enviar email.
@@ -34,9 +28,15 @@ async function sendMail({ to, subject, body }) {
                 </div>
             `,
         };
-        console.log(msg);
         await sgMail.send(msg);
     } catch (error) {
         throw new Error('Error enviando email');
     }
 }
+
+
+module.exports = {
+    formatDate,
+    generaCadenaAleatoria,
+    sendMail,
+};

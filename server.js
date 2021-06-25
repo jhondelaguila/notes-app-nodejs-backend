@@ -1,10 +1,10 @@
 require('dotenv').config();
-
 const express = require('express');
 const morgan = require('morgan');
-const { PORT } = process.env;
-
+const fileUpload = require('express-fileupload');
 const app = express();
+
+const { PORT } = process.env;
 
 const existeTema = require('./middlewares/existeTema');
 const existeUsuario = require('./middlewares/existeUsuario'); 

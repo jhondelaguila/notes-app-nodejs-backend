@@ -3,7 +3,6 @@ const getDB = require('../../bbdd/db');
 const {
     generaCadenaAleatoria,
     sendMail,
-    formatDate,
 } = require('../../helpers');
 
 const usuarioNuevo = async (req, res, next) => {
@@ -12,9 +11,9 @@ const usuarioNuevo = async (req, res, next) => {
     try {
         connection = await getDB();
 
-        const { email, contraseña } = req.body;
+        const { email, contraseña, alias , avatar} = req.body;
 
-        if (!email || !contraseña) {
+        if (!email || !contraseña || !alias) {
             const error = new Error('Faltan campos');
             error.httpStatus = 400;
             throw error;
@@ -49,8 +48,8 @@ const usuarioNuevo = async (req, res, next) => {
         });
         // Guardamos al usuario en la base de datos junto al código de registro.
         await connection.query(
-            `INSERT INTO usuarios (email, contraseña, codigoRegistro, createdAt) VALUES (?, SHA2(?, 512), ?, ?);`,
-            [email, contraseña, CodigoRegistro, formatDate(new Date())]
+            `INSERT INTO usuarios (email, contraseña, codigo_registro, alias, avatar) VALUES (?, SHA2(?, 512), ?, ?, ?);`,
+            [email, contraseña, CodigoRegistro, alias, avatar]
         );
         res.send({
             status: 'ok',
