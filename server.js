@@ -33,7 +33,7 @@ const {
 const {
     obtenerUsuario,
     usuarioNuevo,
-    validaUsuario,
+    validarUsuario,
     loginUsuario,
 } = require('./controladores/usuarios');
 
@@ -76,7 +76,7 @@ app.get('/Usuarios/:idUsuario', existeUsuario, obtenerUsuario);
 //Crea un usuario nuevo "da error"
 app.post('/Usuarios', usuarioNuevo);
 // Validar usuario
-app.get('/Usuarios/validacion/:CodigoRegistro', validaUsuario);
+app.get('/Usuarios/validacion/:codigoRegistro', validarUsuario);
 //Login de usuario
 app.post('/Usuarios/login', loginUsuario);
 

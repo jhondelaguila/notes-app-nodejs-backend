@@ -1,6 +1,8 @@
 const { format } = require('date-fns');
 const crypto = require('crypto');
 const sgMail = require('@sendgrid/mail');
+
+
 function formatDate(date) {
     return format(date, 'yyyy-MM-dd HH:mm:ss');
 }
@@ -32,7 +34,7 @@ async function sendMail({ to, subject, body }) {
     } catch (error) {
         throw new Error('Error enviando email');
     }
-}
+};
 
 
 module.exports = {

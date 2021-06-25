@@ -20,8 +20,11 @@ const borrarNota = async (req, res, next) => {
             error.httpStatus = 401;
             throw error;
         }
+        await connection.query('set foreign_key_checks=0;')
 
         await connection.query(`delete from notas where id = ?`,[idNota]);
+
+        await connection.query('set foreign_key_checks=1;')
 
         res.send({
             status: 'ok',

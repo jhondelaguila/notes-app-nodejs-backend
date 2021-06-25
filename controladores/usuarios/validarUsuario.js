@@ -1,6 +1,6 @@
 const getDB = require('../../bbdd/db');
 
-const validaUsuario = async (req, res, next) => {
+const validarUsuario = async (req, res, next) => {
     let connection;
 
     try {
@@ -10,7 +10,7 @@ const validaUsuario = async (req, res, next) => {
 
         // Comprobamos si hay algún usuario pendiente de validar con ese código.
         const [usuario] = await connection.query(
-            `SELECT id FROM usuarios WHERE registrationCode = ?;`,
+            `SELECT id FROM usuarios WHERE codigo_registro = ?;`,
             [codigoRegistro]
         );
 
@@ -23,8 +23,8 @@ const validaUsuario = async (req, res, next) => {
         }
         // Activamos el usuario y eliminamos el código.
         await connection.query(
-            `UPDATE usuarios SET active = true, codigoRegistro = NULL WHERE codigoRegistro = ?;`,
-            [registrationCode]
+            `UPDATE usuarios SET activo = true, codigo_registro = NULL WHERE codigo_registro = ?;`,
+            [codigoRegistro]
         );
 
         res.send({
@@ -38,4 +38,4 @@ const validaUsuario = async (req, res, next) => {
     }
 };
 
-module.exports = validaUsuario;
+module.exports = validarUsuario;
