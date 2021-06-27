@@ -11,6 +11,7 @@ const existeUsuario = require('./middlewares/existeUsuario');
 const puedeEditarGrupo = require('./middlewares/puedeEditarGrupo');
 const existeNota = require('./middlewares/existeNota');
 const puedeEditarNota = require('./middlewares/puedeEditarNota');
+const userAuth = require('./middlewares/userAuth');
 
 const {
     listaNotas, 
