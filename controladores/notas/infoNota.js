@@ -10,7 +10,7 @@ const infoNota = async (req, res, next) => {
         
         const [nota] = await connection.query(
             `
-            SELECT  n.id, n.contenido,n.fecha_creacion,n.fecha_modificacion,n.id_tema, n.id_usuario, avg(ifnull(v.valoracion,0)) as valoracion
+            SELECT  n.id, n.contenido,n.fecha_creacion,n.fecha_modificacion,n.id_grupo, n.id_usuario, avg(ifnull(v.valoracion,0)) as valoracion
             FROM notas n
             left join valoraciones v on(n.id = v.id_nota)
             where n.id = ?

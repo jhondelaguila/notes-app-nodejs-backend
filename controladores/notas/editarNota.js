@@ -17,7 +17,7 @@ const editarNota = async (req, res, next) => {
         );
 
         if(propietario[0].id_usuario !== idUsuario){
-            const error = new Error('No puedes editar este tema');
+            const error = new Error('No puedes editar esta nota');
             error.httpStatus = 401;
             throw error;
         }

@@ -1,18 +1,18 @@
 const getDB = require('../../bbdd/db');
 
-const borrarTema = async (req, res, next) => {
+const borrarGrupo = async (req, res, next) => {
     let connection;
 
     try {
         connection = await getDB();
 
-        const {idTema} = req.params;
+        const {idGrupo} = req.params;
         const {idUsuario} = req.body;
 
         const [propietario] = await connection.query(
             `
-           select id_usuario from temas where id = ?
-            `,[idTema]
+           select id_usuario from grupos where id = ?
+            `,[idGrupo]
         );
 
         if(propietario[0].id_usuario !== idUsuario){
@@ -22,13 +22,13 @@ const borrarTema = async (req, res, next) => {
         }
         await connection.query('set foreign_key_checks=0;')
 
-        await connection.query(`delete from temas where id = ?`,[idTema]);
+        await connection.query(`delete from grupos where id = ?`,[idGrupo]);
 
         await connection.query('set foreign_key_checks=1;')
 
         res.send({
             status: 'ok',
-            message: `El tema con id ${idTema} ha sido eliminada`,
+            message: `El grupo con id ${idGrupo} ha sido eliminado`,
         });
     } catch (error) {
         next(error);
@@ -37,4 +37,4 @@ const borrarTema = async (req, res, next) => {
     }
 };
 
-module.exports = borrarTema;
+module.exports = borrarGrupo;

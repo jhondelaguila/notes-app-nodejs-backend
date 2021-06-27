@@ -19,21 +19,21 @@ const listaNotas = async (req, res, next) => {
         if (search) {
             [resultados] = await connection.query(
                 `
-                SELECT  n.id, n.contenido,n.fecha_creacion,n.fecha_modificacion,n.id_tema, n.id_usuario, avg(ifnull(v.valoracion,0)) as valoracion
+                SELECT  n.id, n.contenido,n.fecha_creacion,n.fecha_modificacion,n.id_grupo, n.id_usuario, avg(ifnull(v.valoracion,0)) as valoracion
                 FROM notas n
                 left join valoraciones v on(n.id = v.id_nota)
                 where n.contenido = ?
-                group by n.id, n.contenido,n.fecha_creacion,n.fecha_modificacion,n.id_tema, n.id_usuario
+                group by n.id, n.contenido,n.fecha_creacion,n.fecha_modificacion,n.id_grupo, n.id_usuario
                 order by ${orderBy} ${orderDirection};
                 `,
                 [`%${search}%`]
             );
         } else {
             [resultados] = await connection.query(`
-                SELECT  n.id, n.contenido,n.fecha_creacion,n.fecha_modificacion,n.id_tema, n.id_usuario, avg(ifnull(v.valoracion,0)) as valoracion
+                SELECT  n.id, n.contenido,n.fecha_creacion,n.fecha_modificacion,n.id_grupo, n.id_usuario, avg(ifnull(v.valoracion,0)) as valoracion
                 FROM notas n
                 left join valoraciones v on(n.id = v.id_nota)
-                group by n.id, n.contenido,n.fecha_creacion,n.fecha_modificacion,n.id_tema, n.id_usuario
+                group by n.id, n.contenido,n.fecha_creacion,n.fecha_modificacion,n.id_grupo, n.id_usuario
                 order by ${orderBy} ${orderDirection};
             `);
         }

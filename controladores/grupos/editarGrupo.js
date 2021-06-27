@@ -1,19 +1,19 @@
 const getDB = require('../../bbdd/db');
 const {formatDate} = require('../../helpers');
 
-const editarTema = async(req,res,next)=>{
+const editarGrupo = async(req,res,next)=>{
     let connection;
 
     try {
         connection = await getDB();
 
-        const {idTema} = req.params;
+        const {idGrupo} = req.params;
         const {titulo, idUsuario} = req.body;
 
         const [propietario] = await connection.query(
             `
-            select id_usuario from temas where id = ?;
-            `,[idTema]
+            select id_usuario from grupos where id = ?;
+            `,[idGrupo]
         );
 
         if(propietario[0].id_usuario !== idUsuario){
@@ -32,14 +32,14 @@ const editarTema = async(req,res,next)=>{
 
         await connection.query(
             `
-            update temas set titulo = ?, fecha_modificacion = ? where id = ?;
-            `,[titulo,formatDate(now), idTema]
+            update grupos set titulo = ?, fecha_modificacion = ? where id = ?;
+            `,[titulo,formatDate(now), idGrupo]
         );
 
         res.send({
             status: 'ok',
             data: {
-                id: idTema,titulo,
+                id: idGrupo,titulo,
                 fecha_modificacion: now,
             }
         });
@@ -51,4 +51,4 @@ const editarTema = async(req,res,next)=>{
     }
 };
 
-module.exports = editarTema;
+module.exports = editarGrupo;
