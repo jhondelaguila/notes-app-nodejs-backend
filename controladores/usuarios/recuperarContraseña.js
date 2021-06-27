@@ -50,7 +50,7 @@ const recuperarContraseña = async (req, res, next) => {
 
         // Agregamos el código de recuperación al usuario con dicho email.
         await connection.query(
-            `UPDATE usuarios SET codigoRecuperacion = ? WHERE email = ?;`,
+            `UPDATE usuarios SET codigorecuperacion = ? WHERE email = ?;`,
             [codigoRecuperacion, email]
         );
 
