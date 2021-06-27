@@ -7,13 +7,14 @@ const app = express();
 const { PORT } = process.env;
 
 const existeTema = require('./middlewares/existeTema');
-const existeUsuario = require('./middlewares/existeUsuario'); 
+const existeUsuario = require('./middlewares/existeUsuario');
 const puedeEditarTema = require('./middlewares/puedeEditarTema');
 const existeNota = require('./middlewares/existeNota');
 const puedeEditarNota = require('./middlewares/puedeEditarNota');
+const userAuth = require('./middlewares/userAuth');
 
 const {
-    listaNotas, 
+    listaNotas,
     infoNota,
     nuevaNota,
     valorarNota,
@@ -22,11 +23,11 @@ const {
 } = require('./controladores/notas');
 
 const {
-    listaTemas, 
-    infoTema, 
-    nuevoTema, 
-    valorarTema, 
-    editarTema, 
+    listaTemas,
+    infoTema,
+    nuevoTema,
+    valorarTema,
+    editarTema,
     borrarTema,
 } = require('./controladores/temas');
 
@@ -35,6 +36,9 @@ const {
     usuarioNuevo,
     validarUsuario,
     loginUsuario,
+    editaUsuario,
+    editaContraseña,
+    recuperarContraseña,
 } = require('./controladores/usuarios');
 
 app.use(morgan('dev'));
@@ -46,12 +50,12 @@ app.use(express.json());
  * #####################
  */
 
- app.get('/temas/notas', listaNotas);
- app.get('/temas/notas/:idNota',existeNota,infoNota );
- app.post('/temas/notas', nuevaNota);
- app.post('/temas/notas/:idNota/valoracion',existeNota, valorarNota);
- app.put('/temas/notas/:idNota',existeNota, puedeEditarNota, editarNota);
- app.delete('/temas/notas/:idNota',existeNota, puedeEditarNota, borrarNota );
+app.get('/temas/notas', listaNotas);
+app.get('/temas/notas/:idNota', existeNota, infoNota);
+app.post('/temas/notas', nuevaNota);
+app.post('/temas/notas/:idNota/valoracion', existeNota, valorarNota);
+app.put('/temas/notas/:idNota', existeNota, puedeEditarNota, editarNota);
+app.delete('/temas/notas/:idNota', existeNota, puedeEditarNota, borrarNota);
 
 /**
  * #####################
@@ -62,10 +66,9 @@ app.use(express.json());
 app.get('/temas', listaTemas);
 app.get('/temas/:idTema', existeTema, infoTema);
 app.post('/temas', nuevoTema);
-app.post('/temas/:idTema/valoracion', existeTema, valorarTema);
-app.put('/temas/:idTema',existeTema, puedeEditarTema, editarTema);
-app.delete('/temas/:idTema', existeTema, puedeEditarTema, borrarTema);
-
+app.post('/temas/:idTema/valoracion', userAuth, existeTema, valorarTema);
+app.put('/temas/:idTema', userAuth, existeTema, puedeEditarTema, editarTema);
+app.delete('/temas/:idTema', userAuth, existeTema, puedeEditarTema, borrarTema);
 
 /**
  * ########################
@@ -79,6 +82,17 @@ app.post('/Usuarios', usuarioNuevo);
 app.get('/Usuarios/validacion/:codigoRegistro', validarUsuario);
 //Login de usuario
 app.post('/Usuarios/login', loginUsuario);
+//Editar usuario
+app.put('/Usuarios/:idUsuario', editaUsuario);
+//Edita contraseña
+app.put(
+    '/Usuarios/:idUsuario/contraseña',
+    userAuth,
+    existeUsuario,
+    editaContraseña
+);
+//Envia correo de recuperación
+app.put('/Usuarios/contraseña/recuperarContraseña', recuperarContraseña);
 
 /**
  * #######################

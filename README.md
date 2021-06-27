@@ -12,13 +12,13 @@
 
 ## Temas
 
-- **GET** - [/temas] - Obtener lista temas. ✅
-- **GET** - [/temas/:idTema] - Obtener la info de un tema concreto.✅
-- **POST** - [/temas/] - Insertar nueva tema.✅
-- **PUT** - [/temas/:idTema] - Editar nombre de un tema.✅
-- **DELETE** - [/temas/:idTema] - Eliminar una tema.✅
-- **POST** - [/temas/:idTema/valoracion] - Valorar una tema.✅
-- **GET** - [/temas/:idTema/mediavaloracion] - Obtener la media de los votos.
+-   **GET** - [/temas] - Obtener lista temas. ✅
+-   **GET** - [/temas/:idTema] - Obtener la info de un tema concreto.✅
+-   **POST** - [/temas/] - Insertar nueva tema.✅
+-   **PUT** - [/temas/:idTema] - Editar nombre de un tema.✅
+-   **DELETE** - [/temas/:idTema] - Eliminar una tema.✅
+-   **POST** - [/temas/:idTema/valoracion] - Valorar una tema.✅
+-   **GET** - [/temas/:idTema/mediavaloracion] - Obtener la media de los votos.
 
 ## Usuarios
 
@@ -28,6 +28,6 @@
 -   **GET** - [/Usuarios/validacion/:CodigoRegistro] - Valida un usuario recién registrado.
 -   **PUT** - [/Usuarios/:idUsuario] - Edita el nombre, el email o el avatar de un usuario.
 -   **PUT** - [/Usuarios/:idUsuario/contraseña] - Editar contraseña.
--   **PUT** - [/Usuarios/contraseña/recuperarContraseña] - Envia un correo con el código de reseteo dse contraseña a un email.
+-   **PUT** - [/Usuarios/contraseña/recuperarContraseña] - Envia un correo con el código de reseteo de contraseña a un email.
 -   **PUT** - [/Usuarios/contraseña/reset] - Cambia la contraseña de un usuario.
 -   **DELETE** - [/Usuarios/:idUsuario] - Desactivar/Borra usuario.
