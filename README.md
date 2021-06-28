@@ -30,4 +30,4 @@
 -   **PUT** - [/Usuarios/:idUsuario/contraseña] - Editar contraseña.✅
 -   **PUT** - [/Usuarios/contraseña/recuperarContraseña] - Envia un correo con el código de reseteo dse contraseña a un email.✅
 -   **PUT** - [/Usuarios/contraseña/reset] - Cambia la contraseña de un usuario.✅
--   **DELETE** - [/Usuarios/:idUsuario] - Desactivar/Borra usuario.
+-   **DELETE** - [/Usuarios/:idUsuario] - Desactivar/Borra usuario.✅
