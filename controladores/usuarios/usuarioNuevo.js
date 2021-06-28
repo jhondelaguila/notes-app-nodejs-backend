@@ -25,7 +25,7 @@ const usuarioNuevo = async (req, res, next) => {
             [email]
         );
 
-        if (usuario.length > 0) {
+        if (usuario.length > 1) {
             const error = new Error(
                 'Ya existe un usuario con ese email en la base de datos'
             );

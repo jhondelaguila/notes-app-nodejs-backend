@@ -7,7 +7,8 @@ const valorarNota = async (req, res, next) => {
         connection = await getDB();
 
         const {  idNota } = req.params;
-        const { valoracion, idUsuario } = req.body;
+        const { valoracion} = req.body;
+        const {idUsuario} = req.usuarioAutorizado;
 
         if (valoracion < 1 || valoracion > 5) {
             const error = new Error('El voto debe estar entre 1 y 5');
@@ -43,7 +44,7 @@ const valorarNota = async (req, res, next) => {
 
         await connection.query(
             `
-           insert into valoraciones (id_usuario,id_tema,id_nota, valoracion)
+           insert into valoraciones (id_usuario,id_grupo,id_nota, valoracion)
            values (?,null,?,?);
             `,
             [idUsuario, idNota, valoracion]

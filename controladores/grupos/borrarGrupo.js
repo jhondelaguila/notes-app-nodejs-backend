@@ -7,7 +7,7 @@ const borrarGrupo = async (req, res, next) => {
         connection = await getDB();
 
         const {idGrupo} = req.params;
-        const {idUsuario} = req.body;
+        const {idUsuario} = req.usuarioAutorizado;
 
         const [propietario] = await connection.query(
             `

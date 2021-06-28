@@ -10,7 +10,7 @@ const editaContraseña = async (req, res, next) => {
         const { antiguaContraseña, nuevaContraseña } = req.body;
 
         // Comprobamos si no somos dueños de este usuario.
-        if (req.userAuth.idUsuario !== Number(idUsuario)) {
+        if (req.usuarioAutorizado.idUsuario !== Number(idUsuario)) {
             const error = new Error(
                 'No tienes permisos para editar este usuario'
             );
@@ -42,7 +42,7 @@ const editaContraseña = async (req, res, next) => {
 
         // Guardamos la nueva contraseña.
         await connection.query(
-            `UPDATE usuarios SET contraseña = SHA2(?, 512), WHERE id = ?;`,
+            `UPDATE usuarios SET contraseña = SHA2(?, 512) WHERE id = ?;`,
             [nuevaContraseña, idUsuario]
         );
 

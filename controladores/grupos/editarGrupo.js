@@ -8,7 +8,8 @@ const editarGrupo = async(req,res,next)=>{
         connection = await getDB();
 
         const {idGrupo} = req.params;
-        const {titulo, idUsuario} = req.body;
+        const {titulo} = req.body;
+        const {idUsuario} = req.usuarioAutorizado;
 
         const [propietario] = await connection.query(
             `
@@ -17,7 +18,7 @@ const editarGrupo = async(req,res,next)=>{
         );
 
         if(propietario[0].id_usuario !== idUsuario){
-            const error = new Error('No puedes editar este tema');
+            const error = new Error('No puedes editar este grupo');
             error.httpStatus = 401;
             throw error;
         }

@@ -8,7 +8,8 @@ const valorarGrupo = async (req, res, next) => {
 
         // const {idUsuario} = req.userAuth;
         const { idGrupo } = req.params;
-        const { valoracion, idUsuario } = req.body;
+        const { valoracion} = req.body;
+        const {idUsuario}=req.usuarioAutorizado;
 
         if (valoracion < 1 || valoracion > 5) {
             const error = new Error('El voto debe estar entre 1 y 5');

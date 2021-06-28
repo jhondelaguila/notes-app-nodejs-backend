@@ -7,7 +7,8 @@ const nuevaNota = async (req, res, next) => {
     try {
         connection = await getDB();
 
-        const { contenido, idGrupo , idUsuario } = req.body;
+        const { contenido, idGrupo } = req.body;
+        const {idUsuario} = req.usuarioAutorizado;
 
         if (!contenido || !idGrupo || !idUsuario) {
             const error = new Error('Faltan campos');

@@ -8,7 +8,8 @@ const editarNota = async (req, res, next) => {
         connection = await getDB();
 
         const {idNota} = req.params;
-        const {contenido, idUsuario} = req.body;
+        const {contenido} = req.body;
+        const {idUsuario} = req.usuarioAutorizado;
 
         const [propietario] = await connection.query(
             `

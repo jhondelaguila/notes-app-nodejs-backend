@@ -5,8 +5,8 @@ const loginUsuario = require('./loginUsuario');
 const editaUsuario = require('./editaUsuario');
 const editaContraseña = require('./editaContraseña');
 const recuperarContraseña = require('./recuperarContraseña');
-const resetContraseña = require('./resetContraseña');
-const borraUsuario = require('./borraUsuario');
+const cambiarContraseña = require('./cambiarContraseña');
+const borrarUsuario = require('./borrarUsuario');
 
 module.exports = {
     obtenerUsuario,
@@ -16,6 +16,6 @@ module.exports = {
     editaUsuario,
     editaContraseña,
     recuperarContraseña,
-    resetContraseña,
-    borraUsuario,
+    cambiarContraseña,
+    borrarUsuario,
 };

@@ -1,6 +1,6 @@
-const { id } = require('date-fns/locale');
 const getDB = require('../../bbdd/db');
-const { formatDate } = require('../../helpers');
+const { formatDate,validate } = require('../../helpers');
+const {esquemaNuevoGrupo} = require('../../esquemas');
 
 const nuevoGrupo = async (req, res, next) => {
     let connection;
@@ -8,9 +8,13 @@ const nuevoGrupo = async (req, res, next) => {
     try {
         connection = await getDB();
 
-        const { categoria, titulo, idUsuario } = req.body;
+        //Validamos los datos
+        await validate(esquemaNuevoGrupo, req.body);
 
-        if (!titulo || !idUsuario) {
+        const { categoria, titulo} = req.body;
+        const { idUsuario } = req.usuarioAutorizado;
+
+        if (!categoria|| !titulo || !idUsuario) {
             const error = new Error('Faltan campos');
             error.httpStatus = 400;
             throw error;

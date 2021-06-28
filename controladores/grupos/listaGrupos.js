@@ -19,21 +19,21 @@ const listaGrupos = async (req, res, next) =>{
         if (search) {
             [resultados] = await connection.query(
                 `
-                SELECT  t.id, t.categoria, t.titulo, t.fecha_creacion, t.fecha_modificacion, avg(ifnull(v.valoracion,0)) as valoracion
+                SELECT  t.id, t.categoria, t.titulo, t.fecha_creacion, t.fecha_modificacion,t.id_usuario, avg(ifnull(v.valoracion,0)) as valoracion
                 FROM grupos t
                 left join valoraciones v on(t.id = v.id_grupo)
                 where t.titulo like ?
-                group by t.id, t.privada, t.categoria, t.titulo, t.fecha_creacion,t.fecha_modificacion
+                group by t.id, t.privada, t.categoria, t.titulo, t.fecha_creacion,t.fecha_modificacion,t.id_usuario
                 order by ${orderBy} ${orderDirection};
                 `,
                 [`%${search}%`]
             );
         } else {
             [resultados] = await connection.query(`
-                SELECT  t.id, t.categoria, t.titulo, t.fecha_creacion, t.fecha_modificacion, avg(ifnull(v.valoracion,0)) as valoracion
+                SELECT  t.id, t.categoria, t.titulo, t.fecha_creacion, t.fecha_modificacion,t.id_usuario, avg(ifnull(v.valoracion,0)) as valoracion
                 FROM grupos t
                 left join valoraciones v on(t.id = v.id_grupo)
-                group by t.id, t.categoria, t.titulo, t.fecha_creacion,t.fecha_modificacion
+                group by t.id, t.categoria, t.titulo, t.fecha_creacion,t.fecha_modificacion, t.id_usuario
                 order by ${orderBy} ${orderDirection};
             `);
         }

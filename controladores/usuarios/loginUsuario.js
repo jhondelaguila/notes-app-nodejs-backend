@@ -26,15 +26,14 @@ const loginUsuario = async (req, res, next) => {
         }
 
         // Si existe pero no está activo...
-        if (!usuario[0].active) {
+        if (usuario[0].active === 0) {
             const error = new Error('Usuario pendiente de validar');
             error.httpStatus = 401;
             throw error;
         }
         // Creamos un objeto con información que le pasaremos al token.
         const tokenInfo = {
-            idUsuario: usuario[0].id,
-            role: usuario[0].role,
+            idUsuario: usuario[0].id
         };
         // Creamos el token.
         const token = jwt.sign(tokenInfo, process.env.SECRET, {

@@ -7,14 +7,14 @@ const app = express();
 const { PORT } = process.env;
 
 const existeGrupo = require('./middlewares/existeGrupo');
-const existeUsuario = require('./middlewares/existeUsuario');
+const existeUsuario = require('./middlewares/existeUsuario'); 
 const puedeEditarGrupo = require('./middlewares/puedeEditarGrupo');
 const existeNota = require('./middlewares/existeNota');
 const puedeEditarNota = require('./middlewares/puedeEditarNota');
-const userAuth = require('./middlewares/userAuth');
+const usuarioAutorizado = require('./middlewares/usuarioAutorizado');
 
 const {
-    listaNotas,
+    listaNotas, 
     infoNota,
     nuevaNota,
     valorarNota,
@@ -41,12 +41,13 @@ const {
     editaUsuario,
     editaContraseña,
     recuperarContraseña,
-    resetContraseña,
-    borraUsuario,
+    cambiarContraseña,
+    borrarUsuario,
 } = require('./controladores/usuarios');
 
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(fileUpload());
 
 /**
  * #####################
@@ -54,17 +55,13 @@ app.use(express.json());
  * #####################
  */
 
-app.get('/grupos/notas', listaNotas);
-app.get('/temas/notas/:idNota', existeNota, infoNota);
-app.post('/grupos/notas', nuevaNota);
-app.post('/temas/notas/:idNota/valoracion', existeNota, valorarNota);
-app.put('/temas/notas/:idNota', existeNota, puedeEditarNota, editarNota);
-app.delete('/temas/notas/:idNota', existeNota, puedeEditarNota, borrarNota);
-app.get(
-    '/grupos/notas/:idNota/mediavaloracion',
-    existeNota,
-    mediaValoracionNota
-);
+ app.get('/grupos/notas', listaNotas);
+ app.get('/grupos/notas/:idNota',existeNota,infoNota );
+ app.post('/grupos/notas',usuarioAutorizado, nuevaNota);
+ app.post('/grupos/notas/:idNota/valoracion',usuarioAutorizado, existeNota, valorarNota);
+ app.put('/grupos/notas/:idNota',usuarioAutorizado, existeNota, puedeEditarNota, editarNota);
+ app.delete('/grupos/notas/:idNota',usuarioAutorizado, existeNota, puedeEditarNota, borrarNota );
+ app.get('/grupos/notas/:idNota/mediavaloracion',existeNota,mediaValoracionNota);
 
 /**
  * ######################
@@ -74,18 +71,19 @@ app.get(
 
 app.get('/grupos', listaGrupos);
 app.get('/grupos/:idGrupo', existeGrupo, infoGrupo);
-app.post('/grupos', nuevoGrupo);
-app.post('/grupos/:idGrupo/valoracion', existeGrupo, valorarGrupo);
-app.put('/grupos/:idGrupo', existeGrupo, puedeEditarGrupo, editarGrupo);
-app.delete('/grupos/:idGrupo', existeGrupo, puedeEditarGrupo, borrarGrupo);
-app.get('/grupos/:idGrupo/mediavaloracion', existeGrupo, mediaValoracionGrupo);
+app.post('/grupos',usuarioAutorizado, nuevoGrupo);
+app.post('/grupos/:idGrupo/valoracion',usuarioAutorizado, existeGrupo, valorarGrupo);
+app.put('/grupos/:idGrupo',usuarioAutorizado, existeGrupo, puedeEditarGrupo, editarGrupo);
+app.delete('/grupos/:idGrupo',usuarioAutorizado, existeGrupo, puedeEditarGrupo, borrarGrupo);
+app.get('/grupos/:idGrupo/mediavaloracion',existeGrupo, mediaValoracionGrupo);
+
 
 /**
  * ########################
  * ## Endpoints Usuarios ##
  * ########################
  */
-app.get('/Usuarios/:idUsuario', existeUsuario, obtenerUsuario);
+app.get('/Usuarios/:idUsuario',usuarioAutorizado, existeUsuario, obtenerUsuario);
 //Crea un usuario nuevo "da error"
 app.post('/Usuarios', usuarioNuevo);
 // Validar usuario
@@ -93,20 +91,21 @@ app.get('/Usuarios/validacion/:codigoRegistro', validarUsuario);
 //Login de usuario
 app.post('/Usuarios/login', loginUsuario);
 //Editar usuario
-app.put('/Usuarios/:idUsuario', editaUsuario);
+app.put('/Usuarios/:idUsuario',usuarioAutorizado, existeUsuario, editaUsuario);
 //Edita contraseña
 app.put(
-    '/Usuarios/:idUsuario/contraseña',
-    userAuth,
+    '/Usuarios/:idUsuario/contrasena',
+    usuarioAutorizado,
     existeUsuario,
     editaContraseña
 );
 //Envia correo de recuperación
-app.put('/Usuarios/contraseña/recuperarContraseña', recuperarContraseña);
-// Resetea contraseña con codigo
-app.put('/Usuarios/contraseña/reset', resetContraseña);
-//Elimina usuario
-app.delete('/Usuarios/:idUsuario', userAuth, existeUsuario, borraUsuario);
+app.put('/Usuarios/contrasena/recuperarContrasena', recuperarContraseña);
+// Resetear contraseña de usuario con un código de recuperación.
+app.put('/Usuarios/contrasena/reset', cambiarContraseña);
+//Eliminar usuario.
+app.delete('/Usuarios/:idUsuario', usuarioAutorizado, existeUsuario, borrarUsuario);
+
 
 /**
  * #######################

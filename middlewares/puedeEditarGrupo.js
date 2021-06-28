@@ -7,7 +7,6 @@ const puedeEditarGrupo = async (req, res, next) => {
         connection = await getDB();
 
         const { idGrupo } = req.params;
-        const {idUsuario} = req.body;
 
         const [propietario] = await connection.query(
             `SELECT id_usuario FROM grupos WHERE id = ?;`,
@@ -16,7 +15,7 @@ const puedeEditarGrupo = async (req, res, next) => {
 
         // Si no soy el propietario de la entrada y no soy administrador
         // no puedo editar.
-        if (propietario[0].admin === 0) {
+        if (propietario[0].id_usuario !== req.usuarioAutorizado.idUsuario) {
             const error = new Error(
                 'No tienes permisos para editar esta entrada'
             );

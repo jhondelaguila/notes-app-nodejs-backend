@@ -9,12 +9,13 @@ const obtenerUsuario = async (req, res, next) => {
             `select id, email, contraseña, alias, avatar from usuarios where id =?;`,
             [idUsuario]
         );
+
         const infoUsuario = {
             alias: usuario[0].alias,
             avatar: usuario[0].avatar,
         };
 
-        if (usuario[0].id === Number(idUsuario)) {
+        if (usuario[0].id === req.usuarioAutorizado.idUsuario) {
             infoUsuario.email = usuario[0].email;
             infoUsuario.contraseña = usuario[0].contraseña;
         }

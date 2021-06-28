@@ -1,5 +1,5 @@
 const getDB = require('../../bbdd/db');
-const { generateRandomString, sendMail } = require('../../helpers');
+const { generaCadenaAleatoria, sendMail } = require('../../helpers');
 
 const recuperarContraseña = async (req, res, next) => {
     let connection;
@@ -28,7 +28,7 @@ const recuperarContraseña = async (req, res, next) => {
         }
 
         // Generamos un código de recuperación.
-        const codigoRecuperacion = generateRandomString(20);
+        const codigoRecuperacion = generaCadenaAleatoria(20);
 
         // Creamos el body con el mensaje.
         const emailBody = `
@@ -50,7 +50,7 @@ const recuperarContraseña = async (req, res, next) => {
 
         // Agregamos el código de recuperación al usuario con dicho email.
         await connection.query(
-            `UPDATE usuarios SET codigorecuperacion = ? WHERE email = ?;`,
+            `UPDATE usuarios SET codigoRecuperacion = ? WHERE email = ?;`,
             [codigoRecuperacion, email]
         );
 

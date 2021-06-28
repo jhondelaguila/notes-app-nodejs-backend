@@ -1,7 +1,10 @@
+const getDB = require('../bbdd/db');
 const jwt = require('jsonwebtoken');
 
-const userAuth = (req, res, next) => {
+const usuarioAutorizado = async (req, res, next) => {
+    let connection;
     try {
+        connection = await getDB();
         const { authorization } = req.headers;
 
         if (!authorization) {
@@ -14,19 +17,21 @@ const userAuth = (req, res, next) => {
 
         try {
             tokenInfo = jwt.verify(authorization, process.env.SECRET);
-        } catch (error) {
-            const err = new Error('Token no válido');
+        } catch (err) {
+            const error = new Error('Token no válido');
             err.httpStatus = 401;
-            throw err;
+            throw error();;
         }
 
-        // Creamos la propiedad "userAuth" en la request.
-        req.userAuth = tokenInfo;
+        // Creamos la propiedad "usuarioAutorizado" en la request.
+        req.usuarioAutorizado = tokenInfo;
 
         next();
     } catch (error) {
         next(error);
+    }finally{
+        if(connection) connection.release();
     }
 };
 
-module.exports = userAuth;
+module.exports = usuarioAutorizado;
