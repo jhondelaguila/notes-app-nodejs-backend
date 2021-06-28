@@ -7,7 +7,7 @@ const valorarNota = async (req, res, next) => {
         connection = await getDB();
 
         const {  idNota } = req.params;
-        const { valoracion, idUsuario, idTema } = req.body;
+        const { valoracion, idUsuario } = req.body;
 
         if (valoracion < 1 || valoracion > 5) {
             const error = new Error('El voto debe estar entre 1 y 5');

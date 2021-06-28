@@ -1,6 +1,6 @@
 const getDB = require('../../bbdd/db');
 
-const listaTemas = async (req, res, next) =>{
+const listaGrupos = async (req, res, next) =>{
     let connection;
 
     try {
@@ -19,21 +19,21 @@ const listaTemas = async (req, res, next) =>{
         if (search) {
             [resultados] = await connection.query(
                 `
-                SELECT  t.id, t.privada, t.categoria, t.titulo, t.fecha_creacion, t.fecha_modificacion t.id_usuario, avg(ifnull(v.valoracion,0)) as valoracion
-                FROM temas t
-                left join valoraciones v on(t.id = v.id_tema)
+                SELECT  t.id, t.categoria, t.titulo, t.fecha_creacion, t.fecha_modificacion, avg(ifnull(v.valoracion,0)) as valoracion
+                FROM grupos t
+                left join valoraciones v on(t.id = v.id_grupo)
                 where t.titulo like ?
-                group by t.id, t.privada, t.categoria, t.titulo, t.fecha_creacion,t.fecha_modificacion, t.id_usuario
+                group by t.id, t.privada, t.categoria, t.titulo, t.fecha_creacion,t.fecha_modificacion
                 order by ${orderBy} ${orderDirection};
                 `,
                 [`%${search}%`]
             );
         } else {
             [resultados] = await connection.query(`
-                SELECT  t.id, t.privada, t.categoria, t.titulo, t.fecha_creacion,t.fecha_modificacion, t.id_usuario, avg(ifnull(v.valoracion,0)) as valoracion
-                FROM temas t
-                left join valoraciones v on(t.id = v.id_tema)
-                group by t.id, t.privada, t.categoria, t.titulo, t.fecha_creacion,t.fecha_modificacion, t.id_usuario
+                SELECT  t.id, t.categoria, t.titulo, t.fecha_creacion, t.fecha_modificacion, avg(ifnull(v.valoracion,0)) as valoracion
+                FROM grupos t
+                left join valoraciones v on(t.id = v.id_grupo)
+                group by t.id, t.categoria, t.titulo, t.fecha_creacion,t.fecha_modificacion
                 order by ${orderBy} ${orderDirection};
             `);
         }
@@ -49,5 +49,5 @@ const listaTemas = async (req, res, next) =>{
     }
 };
 
-module.exports = listaTemas;
+module.exports = listaGrupos;
 

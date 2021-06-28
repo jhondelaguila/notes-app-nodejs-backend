@@ -1,7 +1,6 @@
-const getDB = require('../bbdd/db');
 const jwt = require('jsonwebtoken');
 
-const userAuth = async (req, res, next) => {
+const userAuth = (req, res, next) => {
     try {
         const { authorization } = req.headers;
 

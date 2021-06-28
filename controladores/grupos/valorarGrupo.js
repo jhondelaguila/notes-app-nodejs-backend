@@ -1,14 +1,14 @@
 const getDB = require('../../bbdd/db');
 
-const valorarTema = async (req, res, next) => {
+const valorarGrupo = async (req, res, next) => {
     let connection;
 
     try {
         connection = await getDB();
 
         // const {idUsuario} = req.userAuth;
-        const { idTema } = req.params;
-        const { valoracion, idUsuario, idNota } = req.body;
+        const { idGrupo } = req.params;
+        const { valoracion, idUsuario } = req.body;
 
         if (valoracion < 1 || valoracion > 5) {
             const error = new Error('El voto debe estar entre 1 y 5');
@@ -18,9 +18,9 @@ const valorarTema = async (req, res, next) => {
 
         const [propietario] = await connection.query(
             `
-            select id_usuario from temas where id = ?;
+            select id_usuario from grupos where id = ?;
             `,
-            [idTema]
+            [idGrupo]
         );
 
         if (propietario[0].id_usuario === idUsuario) {
@@ -31,9 +31,9 @@ const valorarTema = async (req, res, next) => {
 
         const [yaHaVotado] = await connection.query(
             `
-            select id_usuario, id_tema from valoraciones where id_usuario = ? and id_tema = ?;
+            select id_usuario, id_grupo from valoraciones where id_usuario = ? and id_grupo = ?;
             `,
-            [idUsuario, idTema]
+            [idUsuario, idGrupo]
         );
 
         if (yaHaVotado.length > 0) {
@@ -44,19 +44,19 @@ const valorarTema = async (req, res, next) => {
 
         await connection.query(
             `
-           insert into valoraciones (id_usuario,id_tema,id_nota, valoracion)
+           insert into valoraciones (id_usuario,id_grupo,id_nota, valoracion)
            values (?,?,null,?);
             `,
-            [idUsuario, idTema, valoracion]
+            [idUsuario, idGrupo, valoracion]
         );
 
         const [nuevaMedia] = await connection.query(
             `
             select avg(valoracion) as valoracion
             from valoraciones
-            where id_tema = ?; 
+            where id_grupo = ?; 
             `,
-            [idTema]
+            [idGrupo]
         );
 
         res.send({
@@ -72,4 +72,4 @@ const valorarTema = async (req, res, next) => {
     }
 };
 
-module.exports = valorarTema;
+module.exports = valorarGrupo;

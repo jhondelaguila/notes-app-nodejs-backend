@@ -7,9 +7,9 @@ const nuevaNota = async (req, res, next) => {
     try {
         connection = await getDB();
 
-        const { contenido, idTema , idUsuario } = req.body;
+        const { contenido, idGrupo , idUsuario } = req.body;
 
-        if (!contenido || !idTema || !idUsuario) {
+        if (!contenido || !idGrupo || !idUsuario) {
             const error = new Error('Faltan campos');
             error.httpStatus = 400;
             throw error;
@@ -19,10 +19,10 @@ const nuevaNota = async (req, res, next) => {
 
         const [nota] = await connection.query(
             `
-            insert into notas(contenido, fecha_creacion, fecha_modificacion,id_tema, id_usuario)
+            insert into notas(contenido, fecha_creacion, fecha_modificacion,id_grupo, id_usuario)
             values(?,?,null,?,?)
             `,
-            [contenido, formatDate(now),idTema, idUsuario]
+            [contenido, formatDate(now),idGrupo, idUsuario]
         );
 
         const { insertId } = nota;
