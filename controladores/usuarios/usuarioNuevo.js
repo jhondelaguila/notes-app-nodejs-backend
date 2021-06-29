@@ -3,7 +3,10 @@ const getDB = require('../../bbdd/db');
 const {
     generaCadenaAleatoria,
     sendMail,
+    validate,
 } = require('../../helpers');
+
+const {esquemaNuevoUsuario} = require('../../esquemas/usuarios'); 
 
 const usuarioNuevo = async (req, res, next) => {
     let connection;
@@ -11,13 +14,15 @@ const usuarioNuevo = async (req, res, next) => {
     try {
         connection = await getDB();
 
+        await validate(esquemaNuevoUsuario, req.body);
+
         const { email, contraseña, alias , avatar} = req.body;
 
-        if (!email || !contraseña || !alias) {
-            const error = new Error('Faltan campos');
-            error.httpStatus = 400;
-            throw error;
-        }
+        // if (!email || !contraseña || !alias) {
+        //     const error = new Error('Faltan campos');
+        //     error.httpStatus = 400;
+        //     throw error;
+        // }
 
         //Comprobamos si existe el email
         const [usuario] = await connection.query(

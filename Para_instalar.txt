@@ -7,7 +7,7 @@ en .env
 PUBLIC_HOST=http://localhost:5500
 SENDGRID_API_KEY=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
 SENDGRID_FROM = fhernann@gmail.com
-UPLOADS_DIRECTORY=Imágenes
+UPLOADS_DIRECTORY=/home/jhonjr/Imágenes
 
 login usuario
 npm i jsonwebtoken

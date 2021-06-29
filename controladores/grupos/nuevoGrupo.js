@@ -1,6 +1,6 @@
 const getDB = require('../../bbdd/db');
 const { formatDate,validate } = require('../../helpers');
-const {esquemaNuevoGrupo} = require('../../esquemas');
+const {esquemaNuevoGrupo} = require('../../esquemas/grupos');
 
 const nuevoGrupo = async (req, res, next) => {
     let connection;
@@ -14,11 +14,11 @@ const nuevoGrupo = async (req, res, next) => {
         const { categoria, titulo} = req.body;
         const { idUsuario } = req.usuarioAutorizado;
 
-        if (!categoria|| !titulo || !idUsuario) {
-            const error = new Error('Faltan campos');
-            error.httpStatus = 400;
-            throw error;
-        }
+        // if (!categoria|| !titulo || !idUsuario) {
+        //     const error = new Error('Faltan campos');
+        //     error.httpStatus = 400;
+        //     throw error;
+        // }
 
         const now = new Date();
 

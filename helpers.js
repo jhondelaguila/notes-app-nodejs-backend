@@ -5,7 +5,6 @@ const sharp = require('sharp');
 const uuid = require('uuid');
 const { ensureDir, unlink } = require('fs-extra');
 const path = require('path');
-const { esquemaNuevoGrupo } = require('./esquemas');
 
 const { UPLOADS_DIRECTORY } = process.env;
 const uploadsDir = path.join(__dirname, UPLOADS_DIRECTORY);
