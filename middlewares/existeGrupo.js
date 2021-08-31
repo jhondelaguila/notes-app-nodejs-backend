@@ -1,32 +1,31 @@
-const getDB = require('../bbdd/db');
+const getDB = require("../bbdd/db");
 
-const existeGrupo = async (req,res,next)=>{
+const existeGrupo = async (req, res, next) => {
+  let connection;
 
-    let connection;
+  try {
+    connection = await getDB();
 
-    try {
-        connection = await getDB();    
+    const { idGrupo } = req.params;
 
-        const {idGrupo} = req.params;
-
-        const [grupo] = await connection.query(
-            `
+    const [grupo] = await connection.query(
+      `
             select id from grupos where id = ?;
-            `,[idGrupo]
-        );
+            `,
+      [idGrupo]
+    );
 
-        if(grupo.length < 1){
-            const error = new Error('Entrada no encontrada');
-            error.httpStatus = 404;
-            throw error;
-        }
-        next();
-
-    } catch (error) {
-        next(error);
-    }finally{
-        if(connection) connection.release();
+    if (grupo.length < 1) {
+      const error = new Error("Entrada no encontrada");
+      error.httpStatus = 404;
+      throw error;
     }
+    next();
+  } catch (error) {
+    next(error);
+  } finally {
+    if (connection) connection.release();
+  }
 };
 
 module.exports = existeGrupo;
