@@ -20,7 +20,7 @@ const usuarioAutorizado = async (req, res, next) => {
         } catch (err) {
             const error = new Error('Token no válido');
             err.httpStatus = 401;
-            throw error();;
+            throw error;
         }
 
         // Creamos la propiedad "usuarioAutorizado" en la request.

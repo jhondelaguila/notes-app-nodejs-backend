@@ -5,6 +5,8 @@ const valorarNota = require('./valorarNota');
 const editarNota = require('./editarNota');
 const borrarNota = require('./borrarNota');
 const mediaValoracionNota = require('./mediaValoracionNota');
+const obtenerNotasUsuario = require('./obtenerNotasUsuario');
+
 module.exports={
     listaNotas,
     infoNota,
@@ -13,4 +15,5 @@ module.exports={
     editarNota,
     borrarNota,
     mediaValoracionNota,
+    obtenerNotasUsuario,
 };

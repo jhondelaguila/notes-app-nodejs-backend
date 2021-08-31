@@ -7,7 +7,7 @@ const existeUsuario = async (req, res, next) => {
         const { idUsuario } = req.params;
 
         const [usuario] = await connection.query(
-            `select id from usuarios where id = ? and deleted = 0;`,
+            `select id from usuarios where id = ? and borrado = 0;`,
             [idUsuario]
         );
 

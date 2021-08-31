@@ -6,14 +6,14 @@ const validarUsuario = async (req, res, next) => {
     try {
         connection = await getDB();
 
-        const { codigoRegistro } = req.params;
+        const { CodigoRegistro } = req.body;
 
         // Comprobamos si hay algún usuario pendiente de validar con ese código.
         const [usuario] = await connection.query(
             `SELECT id FROM usuarios WHERE codigo_registro = ?;`,
-            [codigoRegistro]
+            [CodigoRegistro]
         );
-
+        
         if (usuario.length < 1) {
             const error = new Error(
                 'No hay usuarios pendientes de validar con este código'
@@ -24,7 +24,7 @@ const validarUsuario = async (req, res, next) => {
         // Activamos el usuario y eliminamos el código.
         await connection.query(
             `UPDATE usuarios SET activo = true, codigo_registro = NULL WHERE codigo_registro = ?;`,
-            [codigoRegistro]
+            [CodigoRegistro]
         );
 
         res.send({

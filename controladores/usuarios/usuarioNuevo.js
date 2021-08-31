@@ -16,7 +16,7 @@ const usuarioNuevo = async (req, res, next) => {
 
         await validate(esquemaNuevoUsuario, req.body);
 
-        const { email, contraseña, alias , avatar} = req.body;
+        const { email, password, username , avatar} = req.body;
 
         // if (!email || !contraseña || !alias) {
         //     const error = new Error('Faltan campos');
@@ -43,7 +43,7 @@ const usuarioNuevo = async (req, res, next) => {
         // Mensaje que enviaremos al usuario.
         const emailBody = `
             Te acabas de registrar en Wmark
-            Pulsa en este link para verificar tu cuenta: ${process.env.PUBLIC_HOST}/Usuarios/validacion/${CodigoRegistro}
+            Pulsa en este link para verificar tu cuenta: ${process.env.PUBLIC_HOST}/activate-user?CodigoRegistro=${CodigoRegistro}
         `;
         // Enviamos el mensaje.
         await sendMail({
@@ -54,7 +54,7 @@ const usuarioNuevo = async (req, res, next) => {
         // Guardamos al usuario en la base de datos junto al código de registro.
         await connection.query(
             `INSERT INTO usuarios (email, contraseña, codigo_registro, alias, avatar) VALUES (?, SHA2(?, 512), ?, ?, ?);`,
-            [email, contraseña, CodigoRegistro, alias, avatar]
+            [email, password, CodigoRegistro, username, avatar]
         );
         res.send({
             status: 'ok',

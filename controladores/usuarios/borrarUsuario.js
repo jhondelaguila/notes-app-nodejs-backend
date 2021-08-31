@@ -38,7 +38,7 @@ const borrarUsuario = async (req, res, next) => {
         await connection.query(
             `
             update usuarios
-            set contraseña = ?, alias = "[deleted]", avatar = null, activo = 0, deleted = 1
+            set contraseña = ?, alias = "[deleted]", avatar = null, activo = 0, borrado = 1
             where id = ?;
             `,[generaCadenaAleatoria(40), idUsuario]
         );

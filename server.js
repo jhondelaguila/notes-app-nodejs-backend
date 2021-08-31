@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const morgan = require('morgan');
 const fileUpload = require('express-fileupload');
+const cors = require('cors');
 const app = express();
 
 const { PORT } = process.env;
@@ -21,6 +22,7 @@ const {
     editarNota,
     borrarNota,
     mediaValoracionNota,
+    obtenerNotasUsuario,
 } = require('./controladores/notas');
 
 const {
@@ -48,6 +50,7 @@ const {
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(fileUpload());
+app.use(cors());
 
 /**
  * #####################
@@ -57,6 +60,7 @@ app.use(fileUpload());
 
  app.get('/grupos/notas', listaNotas);
  app.get('/grupos/notas/:idNota',existeNota,infoNota );
+ app.get('/grupos/notas/usuario/:idUsuario',obtenerNotasUsuario);
  app.post('/grupos/notas',usuarioAutorizado, nuevaNota);
  app.post('/grupos/notas/:idNota/valoracion',usuarioAutorizado, existeNota, valorarNota);
  app.put('/grupos/notas/:idNota',usuarioAutorizado, existeNota, puedeEditarNota, editarNota);
@@ -87,7 +91,7 @@ app.get('/Usuarios/:idUsuario',usuarioAutorizado, existeUsuario, obtenerUsuario)
 //Crea un usuario nuevo "da error"
 app.post('/Usuarios', usuarioNuevo);
 // Validar usuario
-app.get('/Usuarios/validacion/:codigoRegistro', validarUsuario);
+app.post('/Usuarios/validacion', validarUsuario);
 //Login de usuario
 app.post('/Usuarios/login', loginUsuario);
 //Editar usuario

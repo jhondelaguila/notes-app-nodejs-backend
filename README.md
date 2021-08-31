@@ -4,6 +4,7 @@
 
 -   **GET** - [/grupos/notas] - Obtener lista notas.✅
 -   **GET** - [/grupos/notas/:idNota] - Obtener la info de una nota concreta.✅
+-   **GET** - [/grupos/notas/:idUsuario] - Obtener info de todas las notas de un usuario.✅
 -   **POST** - [/grupos/notas] - Insertar nueva nota.✅
 -   **PUT** - [/grupos/notas/:idNota] - Editar una nota.✅
 -   **DELETE** - [/grupos/notas/:idNota] - Eliminar una nota.✅
@@ -25,7 +26,7 @@
 -   **GET** - [/Usuarios/:idUsuario] - Obtener info de un usuario.✅
 -   **POST** - [/Usuarios] - Crea un usuario pendiente de activar.✅
 -   **POST** - [/Usuarios/login] - Logea a un usuario retornando un token.
--   **GET** - [/Usuarios/validacion/:CodigoRegistro] - Valida un usuario recién registrado.✅
+-   **GET** - [/Usuarios/validacion/] - Valida un usuario recién registrado.✅
 -   **PUT** - [/Usuarios/:idUsuario] - Edita el nombre, el email o el avatar de un usuario.✅
 -   **PUT** - [/Usuarios/:idUsuario/contraseña] - Editar contraseña.✅
 -   **PUT** - [/Usuarios/contraseña/recuperarContraseña] - Envia un correo con el código de reseteo dse contraseña a un email.✅
