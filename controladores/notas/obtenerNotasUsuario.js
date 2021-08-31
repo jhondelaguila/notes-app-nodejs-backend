@@ -1,29 +1,29 @@
-const getDB = require('../../bbdd/db');
+const getDB = require("../../bbdd/db");
 
 const obtenerNotasUsuario = async (req, res, next) => {
-    let connection;
+  let connection;
 
-    try {
-        connection = await getDB();
+  try {
+    connection = await getDB();
 
-        const {idUsuario} = req.params;
+    const { idUsuario } = req.usuarioAutorizado;
 
-        const [notas] = await connection.query(
-            `
+    const [notas] = await connection.query(
+      `
            select * from notas where id_usuario = ?;
-            `,[idUsuario]
-        );
-        
-        res.send({
-            status: 'ok',
-            notas,
-        });
+            `,
+      [idUsuario]
+    );
 
-    } catch (error) {
-        next(error);
-    } finally {
-        if (connection) connection.release();
-    }
+    res.send({
+      status: "ok",
+      notas,
+    });
+  } catch (error) {
+    next(error);
+  } finally {
+    if (connection) connection.release();
+  }
 };
 
 module.exports = obtenerNotasUsuario;
