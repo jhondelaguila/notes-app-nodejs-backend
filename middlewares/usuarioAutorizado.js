@@ -6,6 +6,7 @@ const usuarioAutorizado = async (req, res, next) => {
   try {
     connection = await getDB();
     const { authorization } = req.headers;
+    console.log(authorization);
 
     if (!authorization) {
       const error = new Error("Falta la cabecera de autenticación");
@@ -25,8 +26,6 @@ const usuarioAutorizado = async (req, res, next) => {
 
     // Creamos la propiedad "usuarioAutorizado" en la request.
     req.usuarioAutorizado = tokenInfo;
-    console.log(tokenInfo);
-
     next();
   } catch (error) {
     next(error);

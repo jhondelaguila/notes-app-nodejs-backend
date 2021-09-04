@@ -144,7 +144,7 @@ app.post("/Usuarios/login", loginUsuario);
 app.put("/Usuarios/:idUsuario", usuarioAutorizado, existeUsuario, editaUsuario);
 //Edita contraseña
 app.put(
-  "/Usuarios/:idUsuario/contrasena",
+  "/Usuarios/:idUsuario/password",
   usuarioAutorizado,
   existeUsuario,
   editaContraseña
