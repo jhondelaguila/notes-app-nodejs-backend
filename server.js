@@ -33,6 +33,7 @@ const {
   editarGrupo,
   borrarGrupo,
   mediaValoracionGrupo,
+  listaGruposUsuario,
 } = require("./controladores/grupos");
 
 const {
@@ -45,12 +46,14 @@ const {
   recuperarContraseña,
   cambiarContraseña,
   borrarUsuario,
+  cargarImagenAvatar,
 } = require("./controladores/usuarios");
 
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(fileUpload());
 app.use(cors());
+app.use("/uploads", express.static("./uploads"));
 
 /**
  * #####################
@@ -72,6 +75,7 @@ app.post(
   existeNota,
   valorarNota
 );
+
 app.put(
   "/grupos/notas/:idNota",
   usuarioAutorizado,
@@ -99,6 +103,7 @@ app.get(
  */
 
 app.get("/grupos", listaGrupos);
+app.get("/grupos/:idUsuario", usuarioAutorizado, listaGruposUsuario);
 app.get("/grupos/:idGrupo", existeGrupo, infoGrupo);
 app.post("/grupos", usuarioAutorizado, nuevoGrupo);
 app.post(
@@ -160,6 +165,8 @@ app.delete(
   existeUsuario,
   borrarUsuario
 );
+
+app.post("/Usuarios/upload-avatar", usuarioAutorizado, cargarImagenAvatar);
 
 /**
  * #######################

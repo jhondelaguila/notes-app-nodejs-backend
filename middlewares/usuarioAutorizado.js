@@ -6,7 +6,6 @@ const usuarioAutorizado = async (req, res, next) => {
   try {
     connection = await getDB();
     const { authorization } = req.headers;
-    console.log(authorization);
 
     if (!authorization) {
       const error = new Error("Falta la cabecera de autenticación");

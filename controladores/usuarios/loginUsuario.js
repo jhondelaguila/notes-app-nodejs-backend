@@ -14,7 +14,7 @@ const loginUsuario = async (req, res, next) => {
       throw error;
     }
     const [usuario] = await connection.query(
-      `SELECT id, activo FROM usuarios WHERE email = ? AND contraseña = SHA2(?, 512);`,
+      `SELECT * FROM usuarios WHERE email = ? AND contraseña = SHA2(?, 512);`,
       [email, password]
     );
 
@@ -26,7 +26,7 @@ const loginUsuario = async (req, res, next) => {
     }
 
     // Si existe pero no está activo...
-    if (usuario[0].active === 0) {
+    if (usuario[0].activo === 0) {
       const error = new Error("Usuario pendiente de validar");
       error.httpStatus = 401;
       throw error;
@@ -39,13 +39,21 @@ const loginUsuario = async (req, res, next) => {
     const token = jwt.sign(tokenInfo, process.env.SECRET, {
       expiresIn: "5d",
     });
+
+    const [grupos] = await connection.query(
+      `select * from grupos where id_usuario = ?`,
+      usuario[0].id
+    );
+
     res.send({
       status: "ok",
       data: {
         id: usuario[0].id,
         email,
         password,
+        avatar: usuario[0].avatar,
         token,
+        grupos,
       },
     });
   } catch (error) {

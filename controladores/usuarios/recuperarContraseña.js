@@ -21,7 +21,7 @@ const recuperarContraseña = async (req, res, next) => {
       [email]
     );
 
-    if (usuario.length < 1) {
+    if (usuario.length === 0) {
       const error = new Error(`No existe ningún usuario con ese email`);
       error.httpStatus = 404;
       throw error;

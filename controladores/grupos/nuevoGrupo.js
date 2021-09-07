@@ -1,65 +1,66 @@
-const getDB = require('../../bbdd/db');
-const { formatDate,validate } = require('../../helpers');
-const {esquemaNuevoGrupo} = require('../../esquemas/grupos');
+const getDB = require("../../bbdd/db");
+const { validate, formatDate } = require("../../helpers");
+const { esquemaNuevoGrupo } = require("../../esquemas/grupos");
 
 const nuevoGrupo = async (req, res, next) => {
-    let connection;
+  let connection;
 
-    try {
-        connection = await getDB();
+  try {
+    connection = await getDB();
 
-        //Validamos los datos
-        await validate(esquemaNuevoGrupo, req.body);
+    //Validamos los datos
+    await validate(esquemaNuevoGrupo, req.body);
 
-        const { categoria, titulo} = req.body;
-        const { idUsuario } = req.usuarioAutorizado;
+    const { titulo } = req.body;
+    const { idUsuario } = req.usuarioAutorizado;
 
-        // if (!categoria|| !titulo || !idUsuario) {
-        //     const error = new Error('Faltan campos');
-        //     error.httpStatus = 400;
-        //     throw error;
-        // }
+    if (!titulo || !idUsuario) {
+      const error = new Error("Faltan campos");
+      error.httpStatus = 400;
+      throw error;
+    }
 
-        const now = new Date();
+    const now = new Date();
 
-        const [grupo] = await connection.query(
-            `
-            insert into grupos(categoria, titulo, fecha_creacion,fecha_modificacion,id_usuario)
-            values(?,?,?,null,?);
+    const [grupo] = await connection.query(
+      `
+            insert into grupos( titulo, fecha_creacion,fecha_modificacion,id_usuario)
+            values(?,?,null,?);
             `,
-            [categoria, titulo, formatDate(now),idUsuario]
-        );
-        const [idGrupo] = await connection.query(
-            `
+      [titulo, formatDate(now), idUsuario]
+    );
+    const [idGrupo] = await connection.query(
+      `
             select id from grupos where fecha_creacion = ?;
-            `,[formatDate(now)]
-            );
+            `,
+      [formatDate(now)]
+    );
 
-        await connection.query(
-            `
+    // console.log("idgrupo:", idGrupo[0].id);
+    await connection.query(
+      `
             insert into grupos_usuarios(id_usuario,id_grupo,admin)
             values(?,?,true);
-            `,[idUsuario,idGrupo[0].id]
-            );
+            `,
+      [idUsuario, idGrupo[0].id]
+    );
 
-        const { insertId } = grupo;
+    const { insertId } = grupo;
 
-        res.send({
-            status: 'ok',
-            data: {
-                id: insertId,
-                idUsuario,
-                categoria,
-                titulo,
-                fecha_creacción: now,
-                valoracion: 0,
-            },
-        });
-    } catch (error) {
-        next(error);
-    } finally {
-        if (connection) connection.release();
-    }
+    const [createdGroup] = await connection.query(
+      `SELECT * FROM grupos WHERE id_usuario = ? and id = ?`,
+      [idUsuario, insertId]
+    );
+
+    res.send({
+      status: "ok",
+      data: createdGroup[0],
+    });
+  } catch (error) {
+    next(error);
+  } finally {
+    if (connection) connection.release();
+  }
 };
 
 module.exports = nuevoGrupo;

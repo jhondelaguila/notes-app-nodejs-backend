@@ -1,5 +1,4 @@
 const getDB = require("../../bbdd/db");
-const { formatDate } = require("../../helpers");
 
 const nuevaNota = async (req, res, next) => {
   let connection;
@@ -10,7 +9,7 @@ const nuevaNota = async (req, res, next) => {
     const { contenido, idGrupo } = req.body;
     const { idUsuario } = req.usuarioAutorizado;
 
-    if (!contenido || !idGrupo || !idUsuario) {
+    if (!contenido || !idUsuario) {
       const error = new Error("Faltan campos");
       error.httpStatus = 400;
       throw error;

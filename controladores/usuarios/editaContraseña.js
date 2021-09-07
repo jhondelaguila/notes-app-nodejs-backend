@@ -11,8 +11,6 @@ const editaContraseña = async (req, res, next) => {
 
     // Comprobamos si no somos dueños de este usuario.
     if (req.usuarioAutorizado.idUsuario !== Number(idUsuario)) {
-      console.log(req.usuarioAutorizado.idUsuario);
-      console.log(idUsuario);
       const error = new Error("No tienes permisos para editar este usuario");
       error.httpStatus = 403;
       throw error;
@@ -30,9 +28,10 @@ const editaContraseña = async (req, res, next) => {
 
     // Comprobamos si la contraseña antigua es correcta.
     const [usuario] = await connection.query(
-      `SELECT id FROM usuarios WHERE id = ? AND contraseña = SHA2(?, 512);`,
+      `SELECT contraseña FROM usuarios WHERE id = ? AND contraseña = SHA2(?, 512);`,
       [idUsuario, password]
     );
+    console.log(usuario);
 
     if (usuario.length < 1) {
       const error = new Error("Contraseña incorrecta");
