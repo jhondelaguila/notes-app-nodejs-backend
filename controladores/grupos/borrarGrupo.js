@@ -23,11 +23,18 @@ const borrarGrupo = async (req, res, next) => {
       error.httpStatus = 401;
       throw error;
     }
-    await connection.query("set foreign_key_checks=0;");
+    // await connection.query("set foreign_key_checks=0;");
+
+    await connection.query(
+      `delete from grupos_usuarios where id_grupo=?`,
+      idGrupo
+    );
+
+    await connection.query(`delete from notas where id_grupo = ?`, idGrupo);
 
     await connection.query(`delete from grupos where id = ?`, [idGrupo]);
 
-    await connection.query("set foreign_key_checks=1;");
+    // await connection.query("set foreign_key_checks=1;");
 
     res.send({
       status: "ok",

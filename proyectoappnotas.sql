@@ -51,6 +51,7 @@ values (1,1,true),(2,2,true),(3,3,true),(4,4,true),(5,5,true),
 
 create table notas(
 	id int unsigned primary key auto_increment,
+    titulo varchar(50),
     contenido varchar(250),
     fecha_creacion datetime not null,
     fecha_modificacion datetime,
