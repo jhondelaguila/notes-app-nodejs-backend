@@ -34,6 +34,8 @@ const {
   borrarGrupo,
   mediaValoracionGrupo,
   listaGruposUsuario,
+  invitarCodigoGrupo,
+  aceptarCodigoGrupo,
 } = require("./controladores/grupos");
 
 const {
@@ -112,6 +114,13 @@ app.post(
   existeGrupo,
   valorarGrupo
 );
+app.put(
+  "/grupos/invitar-grupo/:idGrupo",
+  usuarioAutorizado,
+  existeGrupo,
+  invitarCodigoGrupo
+);
+app.put("/grupos/aceptar-invitacion", aceptarCodigoGrupo);
 app.put(
   "/grupos/:idGrupo",
   usuarioAutorizado,

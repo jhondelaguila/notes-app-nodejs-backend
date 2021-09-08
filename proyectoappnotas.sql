@@ -12,7 +12,8 @@ create table usuarios(
     avatar varchar(100),
     activo boolean default false,
     borrado boolean default false,
-    codigoRecuperacion varchar (100)
+    codigoRecuperacion varchar (100),
+    codigo_grupo varchar(200) unique
 );
 
 /*insert into usuarios(email, contraseña,codigo_registro,alias,avatar,activo)
@@ -25,6 +26,7 @@ create table grupos(
     titulo varchar(50) not null,
     fecha_creacion datetime not null,
     fecha_modificacion datetime,
+    codigo_invitacion varchar(200) unique,
     id_usuario int unsigned not null,
 	foreign key (id_usuario) references usuarios(id)
 );

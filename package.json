@@ -32,6 +32,7 @@
     "jsonwebtoken": "^8.5.1",
     "mime-types": "^2.1.32",
     "mysql2": "^2.2.5",
+    "nodemon": "^2.0.12",
     "querystring": "^0.2.1",
     "sendgrid": "^5.2.3",
     "sharp": "^0.28.3",
@@ -41,7 +42,6 @@
     "chalk": "^4.1.2",
     "eslint": "^7.32.0",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.12",
     "prettier": "^2.3.2"
   }
 }

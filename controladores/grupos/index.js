@@ -6,6 +6,8 @@ const editarGrupo = require("./editarGrupo");
 const borrarGrupo = require("./borrarGrupo");
 const mediaValoracionGrupo = require("./mediaValoracionGrupo");
 const listaGruposUsuario = require("./listaGruposUsuario");
+const invitarCodigoGrupo = require("./invitarCodigoGrupo");
+const aceptarCodigoGrupo = require("./aceptarCodigoGrupo");
 
 module.exports = {
   listaGrupos,
@@ -16,4 +18,6 @@ module.exports = {
   borrarGrupo,
   mediaValoracionGrupo,
   listaGruposUsuario,
+  invitarCodigoGrupo,
+  aceptarCodigoGrupo,
 };

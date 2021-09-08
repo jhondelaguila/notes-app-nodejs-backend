@@ -45,6 +45,11 @@ const loginUsuario = async (req, res, next) => {
       usuario[0].id
     );
 
+    const [notas] = await connection.query(
+      `select * from notas where id_usuario = ?`,
+      usuario[0].id
+    );
+
     res.send({
       status: "ok",
       data: {
@@ -54,6 +59,7 @@ const loginUsuario = async (req, res, next) => {
         avatar: usuario[0].avatar,
         token,
         grupos,
+        notas,
       },
     });
   } catch (error) {
