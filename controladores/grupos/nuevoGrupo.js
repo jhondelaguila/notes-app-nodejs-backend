@@ -1,5 +1,5 @@
 const getDB = require("../../bbdd/db");
-const { validate, formatDate } = require("../../helpers");
+const { generaCadenaAleatoria, validate } = require("../../helpers");
 const { esquemaNuevoGrupo } = require("../../esquemas/grupos");
 
 const nuevoGrupo = async (req, res, next) => {
@@ -20,20 +20,35 @@ const nuevoGrupo = async (req, res, next) => {
       throw error;
     }
 
-    const now = new Date();
+    const now = new Date().toISOString().slice(0, 19).replace("T", " ");
+
+    console.log(now);
 
     const [grupo] = await connection.query(
       `
             insert into grupos( titulo, fecha_creacion,fecha_modificacion,id_usuario)
             values(?,?,null,?);
             `,
-      [titulo, formatDate(now), idUsuario]
+      [titulo, now, idUsuario]
     );
+
     const [idGrupo] = await connection.query(
       `
-            select id from grupos where fecha_creacion = ?;
+            select * from grupos where fecha_creacion = ?;
             `,
-      [formatDate(now)]
+      now
+    );
+
+    // Generamos un código para entrar al grupo.
+    const codigoGrupo = generaCadenaAleatoria(20);
+
+    console.log(codigoGrupo);
+    console.log(idGrupo);
+
+    await connection.query(
+      `insert into invitaciones(codigo_invitacion, id_grupo)
+    values(?,?)`,
+      [codigoGrupo, idGrupo[0].id]
     );
 
     // console.log("idgrupo:", idGrupo[0].id);

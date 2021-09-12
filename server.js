@@ -36,6 +36,7 @@ const {
   listaGruposUsuario,
   invitarCodigoGrupo,
   aceptarCodigoGrupo,
+  abandonarGrupo,
 } = require("./controladores/grupos");
 
 const {
@@ -79,7 +80,7 @@ app.post(
 );
 
 app.put(
-  "/grupos/notas/:idNota",
+  "/grupos/notas/editar/:idNota",
   usuarioAutorizado,
   existeNota,
   puedeEditarNota,
@@ -107,7 +108,7 @@ app.get(
 app.get("/grupos", listaGrupos);
 app.get("/grupos/:idUsuario", usuarioAutorizado, listaGruposUsuario);
 app.get("/grupos/:idGrupo", existeGrupo, infoGrupo);
-app.post("/grupos", usuarioAutorizado, nuevoGrupo);
+app.post("/grupos/nuevogrupo", usuarioAutorizado, nuevoGrupo);
 app.post(
   "/grupos/:idGrupo/valoracion",
   usuarioAutorizado,
@@ -120,13 +121,18 @@ app.put(
   existeGrupo,
   invitarCodigoGrupo
 );
-app.put("/grupos/aceptar-invitacion", aceptarCodigoGrupo);
+app.put("/grupos/aceptar-invitacion/:idUsuario", aceptarCodigoGrupo);
 app.put(
   "/grupos/:idGrupo",
   usuarioAutorizado,
   existeGrupo,
   puedeEditarGrupo,
   editarGrupo
+);
+app.delete(
+  "/grupos/abandonar-grupo/:idGrupo",
+  usuarioAutorizado,
+  abandonarGrupo
 );
 app.delete(
   "/grupos/:idGrupo",

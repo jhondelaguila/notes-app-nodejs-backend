@@ -1,3 +1,4 @@
+const { contentType } = require("mime-types");
 const getDB = require("../../bbdd/db");
 
 const borrarGrupo = async (req, res, next) => {
@@ -27,6 +28,11 @@ const borrarGrupo = async (req, res, next) => {
 
     await connection.query(
       `delete from grupos_usuarios where id_grupo=?`,
+      idGrupo
+    );
+
+    await connection.query(
+      `delete from invitaciones where id_grupo = ?`,
       idGrupo
     );
 

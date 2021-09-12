@@ -40,10 +40,23 @@ const loginUsuario = async (req, res, next) => {
       expiresIn: "5d",
     });
 
-    const [grupos] = await connection.query(
-      `select * from grupos where id_usuario = ?`,
+    const [idGrupo] = await connection.query(
+      `select * from grupos_usuarios where id_usuario=?`,
       usuario[0].id
     );
+
+    let [groups] = await connection.query(`select * from grupos`);
+
+    let grupos = [];
+
+    idGrupo.map((group) => {
+      for (let i = 0; i < groups.length; i++) {
+        if (group.id_grupo === groups[i].id) {
+          groups[i] = { ...groups[i], admin: group.admin };
+          grupos = [...grupos, groups[i]];
+        }
+      }
+    });
 
     const [notas] = await connection.query(
       `select * from notas where id_usuario = ?`,
@@ -55,6 +68,7 @@ const loginUsuario = async (req, res, next) => {
       data: {
         id: usuario[0].id,
         email,
+        alias: usuario[0].alias,
         password,
         avatar: usuario[0].avatar,
         token,

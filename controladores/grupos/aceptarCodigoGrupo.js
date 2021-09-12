@@ -1,5 +1,4 @@
 const getDB = require("../../bbdd/db");
-const { formatDate } = require("../../helpers");
 
 const aceptarCodigoGrupo = async (req, res, next) => {
   let connection;
@@ -8,6 +7,7 @@ const aceptarCodigoGrupo = async (req, res, next) => {
     connection = await getDB();
 
     const { codigoGrupo } = req.body;
+    const { idUsuario } = req.params;
 
     if (!codigoGrupo) {
       const error = new Error("Ingresa el codigo de invitacion");
@@ -16,10 +16,14 @@ const aceptarCodigoGrupo = async (req, res, next) => {
     }
 
     const [grupo] = await connection.query(
-      `select * from grupos where codigo_invitacion = ?`,
+      `select * from invitaciones where codigo_invitacion = ?`,
       codigoGrupo
     );
 
+    let [nuevoGrupo] = await connection.query(
+      `select * from grupos where id = ?`,
+      grupo[0].id_grupo
+    );
     if (grupo.length === 0) {
       const error = new Error("Codigo incorrecto");
       error.httpStatus = 400;
@@ -27,49 +31,31 @@ const aceptarCodigoGrupo = async (req, res, next) => {
     }
 
     const [usuario] = await connection.query(
-      `select * from usuarios where codigo_grupo = ?;`,
-      codigoGrupo
+      `select * from usuarios where id = ?`,
+      idUsuario
     );
+    console.log(usuario[0].id, grupo[0].id);
 
-    if (usuario.length === 0) {
-      const error = new Error("Codigo incorrecto");
-      error.httpStatus = 400;
-      throw error;
-    }
-
-    const now = new Date();
-    console.log(usuario[0].alias, formatDate(now), grupo[0].id, usuario[0].id);
-
-    await connection.query(
-      `insert into notas(titulo, contenido, fecha_creacion, fecha_modificacion,id_grupo, id_usuario)
-      values(?,?,?,null,?,?);`[
-        (usuario[0].alias,
-        usuario[0].alias,
-        formatDate(now),
-        grupo[0].id,
-        usuario[0].id)
-      ]
-    );
-    console.log("llego hasta aqui");
     await connection.query(
       `insert into grupos_usuarios(id_usuario,id_grupo)
       values (?,?);`,
-      [usuario[0].id, grupo[0].id]
+      [usuario[0].id, grupo[0].id_grupo]
+    );
+    console.log("llego hasta aqui2");
+    const [isAdmin] = await connection.query(
+      `select * from grupos_usuarios where id_grupo = ? and id_usuario = ?`,
+      [grupo[0].id_grupo, idUsuario]
     );
 
-    await connection.query(
-      `update grupos set codigo_invitacion = null where id = ?`,
-      grupo[0].id
-    );
+    console.log(isAdmin);
 
-    await connection.query(
-      `update usuarios set codigo_grupo = null where id = ?`,
-      usuario[0].id
-    );
+    nuevoGrupo = [{ ...nuevoGrupo[0], admin: isAdmin[0].admin }];
 
+    console.log(nuevoGrupo);
     res.send({
       status: "ok",
-      message: "Invitación aceptada con éxito",
+      nuevoGrupo: nuevoGrupo[0],
+      message: "Invitacion aceptada con éxito",
     });
   } catch (error) {
     next(error);

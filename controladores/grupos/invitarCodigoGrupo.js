@@ -1,5 +1,5 @@
 const getDB = require("../../bbdd/db");
-const { generaCadenaAleatoria, sendMail } = require("../../helpers");
+const { sendMail } = require("../../helpers");
 
 const invitarCodigoGrupo = async (req, res, next) => {
   let connection;
@@ -16,6 +16,29 @@ const invitarCodigoGrupo = async (req, res, next) => {
       error.httpStatus = 400;
       throw error;
     }
+
+    const [admin] = await connection.query(
+      `select admin from grupos_usuarios where id_usuario = ? and id_grupo = ?`,
+      [idUsuario, idGrupo]
+    );
+
+    console.log(admin[0].admin);
+    if (admin[0].admin === 0) {
+      const error = new Error(`No puedes invitar a gente a este grupo`);
+      error.httpStatus = 404;
+      throw error;
+    }
+
+    const [user] = await connection.query(
+      `select * from usuarios where id = ?`,
+      idUsuario
+    );
+    if (user.length === 0) {
+      const error = new Error(`No existe ningún usuario con ese id`);
+      error.httpStatus = 404;
+      throw error;
+    }
+
     const [group] = await connection.query(
       `select * from grupos where id=?;`,
       idGrupo
@@ -27,20 +50,22 @@ const invitarCodigoGrupo = async (req, res, next) => {
       throw error;
     }
 
-    const [user] = await connection.query(
-      `select * from usuarios where id = ?;`,
-      idUsuario
+    const [invitaciones] = await connection.query(
+      `select codigo_invitacion from invitaciones where id_grupo = ?;`,
+      idGrupo
     );
 
-    if (user.length === 0) {
-      const error = new Error(`No existe ningún usuario con ese id `);
+    if (invitaciones.length === 0) {
+      const error = new Error(
+        `No existe ningún codigo de invitacion de este grupo `
+      );
       error.httpStatus = 404;
       throw error;
     }
 
     // Comrpobamos si existe el email.
     const [usuario] = await connection.query(
-      `SELECT id FROM usuarios WHERE email = ?;`,
+      `SELECT * FROM usuarios WHERE email = ?;`,
       [email]
     );
 
@@ -50,14 +75,11 @@ const invitarCodigoGrupo = async (req, res, next) => {
       throw error;
     }
 
-    // Generamos un código para entrar al grupo.
-    const codigoGrupo = generaCadenaAleatoria(20);
-
     const emailBody = `
             ${user[0].alias} te invita a formar parte del grupo ${group[0].titulo}.
             Si quieres entrar ingresa el siguiente codigo en el apartado INGRESAR GRUPO.
 
-            El código de ingreso es: ${codigoGrupo}
+            El código de ingreso es: ${invitaciones[0].codigo_invitacion}
 
             ¡Gracias!
         `;
@@ -68,17 +90,6 @@ const invitarCodigoGrupo = async (req, res, next) => {
       subject: `${user[0].alias} te invita al grupo ${group[0].titulo}`,
       body: emailBody,
     });
-
-    // Agregamos el código de ingreso al usuario con dicho email.
-    await connection.query(
-      `UPDATE usuarios SET codigo_grupo = ? WHERE email = ?;`,
-      [codigoGrupo, email]
-    );
-
-    await connection.query(
-      `update grupos set codigo_invitacion = ? where id = ?;`,
-      [codigoGrupo, idGrupo]
-    );
 
     res.send({
       status: "ok",

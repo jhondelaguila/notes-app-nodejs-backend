@@ -12,12 +12,11 @@ create table usuarios(
     avatar varchar(100),
     activo boolean default false,
     borrado boolean default false,
-    codigoRecuperacion varchar (100),
-    codigo_grupo varchar(200) unique
+    codigoRecuperacion varchar (100)
 );
 
 /*insert into usuarios(email, contraseña,codigo_registro,alias,avatar,activo)
-values ('jhon@gmail.com','123456',null,'Jhon','panda',true),('fran@gmail.com','54321',null,'Fran','gato',true),
+values ('jhonjr.dap@gmail.com','12345678',null,'Prepon21',null,true),('jj6@hotmail.es','12345678',null,'JJ6',null,true),
 ('usuario@gmail.com','25415',null,'Usuario','perro',true),('usuario2@gmail.com','789456',null,'Usuario2','rana',true),
 ('usuario3@gmail.com','986532',null,'Usuario3','raton',true);*/
 
@@ -26,7 +25,6 @@ create table grupos(
     titulo varchar(50) not null,
     fecha_creacion datetime not null,
     fecha_modificacion datetime,
-    codigo_invitacion varchar(200) unique,
     id_usuario int unsigned not null,
 	foreign key (id_usuario) references usuarios(id)
 );
@@ -54,7 +52,7 @@ values (1,1,true),(2,2,true),(3,3,true),(4,4,true),(5,5,true),
 create table notas(
 	id int unsigned primary key auto_increment,
     titulo varchar(50),
-    contenido varchar(250),
+    contenido text,
     fecha_creacion datetime not null,
     fecha_modificacion datetime,
     id_grupo int unsigned,
@@ -69,15 +67,24 @@ values('Si deberia serlo.','2021-06-21 18:05:10',null,1,1),
 ('Menos mal que ya se quitan','2021-06-21 18:08:10',null,4,4),
 ('Pues por culpa del covid no hay tantos como otros años','2021-06-21 18:09:10',null,5,5);*/
 
-create table valoraciones(
+create table invitaciones (
+    id int unsigned primary key auto_increment,
+    codigo_invitacion varchar(50),
+    id_grupo int unsigned,
+    foreign key (id_grupo) references grupos(id)
+);
+
+create table likes(
 	id_usuario int unsigned,
 	foreign key (id_usuario) references usuarios(id),
     id_grupo int unsigned,
     foreign key (id_grupo) references grupos(id),
     id_nota int unsigned,
     foreign key (id_nota) references notas(id),
-    valoracion tinyint not null,
-    constraint valoraciones_ck1 check (valoracion in(1,2,3,4,5))
+    likes tinyint ,
+    constraint valoraciones_ck1 check (valoracion in(1,0)),
+    dislike tinyint ,
+    constraint valoraciones_ck1 check (valoracion in(1,0)),
 );
 
 /*insert into valoraciones(id_usuario,id_grupo,id_nota, valoracion)
