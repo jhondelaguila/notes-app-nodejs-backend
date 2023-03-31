@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/fhernann/appnotas.git"
+    "url": "git+hhttps://github.com/jhondelaguila/notes-app.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://gitlab.com/fhernann/appnotas/issues"
+    "url": "https://github.com/jhondelaguila/notes-app/issues"
   },
-  "homepage": "https://gitlab.com/fhernann/appnotas#readme",
+  "homepage": "https://github.com/jhondelaguila/notes-app#readme",
   "dependencies": {
     "@sendgrid/mail": "^7.4.5",
     "cors": "^2.8.5",
